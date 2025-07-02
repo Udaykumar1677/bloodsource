@@ -4,12 +4,16 @@ import mysql.connector
 app = Flask(__name__)
 
 # MySQL configuration
+import mysql.connector
+
 db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",  # Change if you have a password set
-    database="bloodsource"
+    host="sql12.freesqldatabase.com",
+    user="sql12787899",
+    password="cMJDREvHib",
+    database="sql12787899",
+    port=3306
 )
+
 cursor = db.cursor()
 
 # Home Page
@@ -70,4 +74,4 @@ def view_requests():
 
 # Run the app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=10000)
