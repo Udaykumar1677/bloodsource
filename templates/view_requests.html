@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blood Requests - BloodSource</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('https://cdn.wallpapersafari.com/48/92/fGm5Sf.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 60px auto;
+            background-color: rgba(255, 255, 255, 0.92);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.4em;
+            color: crimson;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 14px 18px;
+            border: 1px solid #ddd;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        th {
+            background-color: crimson;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #ffe6ec;
+        }
+
+        tr:hover {
+            background-color: #fddde6;
+            transition: background-color 0.3s ease;
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            th {
+                display: none;
+            }
+
+            td {
+                position: relative;
+                padding-left: 50%;
+                text-align: left;
+                border: none;
+                border-bottom: 1px solid #ddd;
+            }
+
+            td:before {
+                position: absolute;
+                left: 10px;
+                top: 14px;
+                white-space: nowrap;
+                font-weight: bold;
+            }
+
+            td:nth-of-type(1):before { content: "Name"; }
+            td:nth-of-type(2):before { content: "Blood Group"; }
+            td:nth-of-type(3):before { content: "Contact"; }
+            td:nth-of-type(4):before { content: "Email"; }
+            td:nth-of-type(5):before { content: "Location"; }
+            td:nth-of-type(6):before { content: "Reason"; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Blood Requests</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Blood Group</th>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th>Location</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in requests %}
+                <tr>
+                    <td>{{ request[1] }}</td>
+                    <td>{{ request[2] }}</td>
+                    <td>{{ request[3] }}</td>
+                    <td>{{ request[4] }}</td>
+                    <td>{{ request[5] }}</td>
+                    <td>{{ request[6] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

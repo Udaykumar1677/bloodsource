@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register as Donor - BloodSource</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url('https://www.sriramakrishnahospital.com/wp-content/uploads/2021/06/Blood-Donation-1.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .overlay {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 40px;
+        }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.12);
+            padding: 30px 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 450px;
+            margin-right: 360px;
+            color: #fff;
+        }
+
+        h2 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            border: none;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.85);
+            color: #333;
+            font-size: 14px;
+        }
+
+        input[type="submit"] {
+            background-color: crimson;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: darkred;
+        }
+
+        @media (max-width: 768px) {
+            .overlay {
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .form-container {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <form action="/register_donor" method="POST" class="form-container">
+            <h2>Register as Donor</h2>
+
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" required>
+
+            <label for="blood_group">Blood Group:</label>
+            <input type="text" name="blood_group" id="blood_group" required>
+
+            <label for="phone">Contact:</label>
+            <input type="text" name="phone" id="phone" required>
+           
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+
+            <label for="location">Location:</label>
+            <input type="text" name="location" id="location" required>
+
+            <input type="submit" value="Register">
+        </form>
+    </div>
+</body>
+</html>
