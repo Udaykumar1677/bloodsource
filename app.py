@@ -45,15 +45,15 @@ def request_blood():
     if request.method == 'POST':
         name = request.form['name']
         blood_group = request.form['blood_group']
-        phone = request.form['phone']
+        contact = request.form['contact']
         email = request.form['email']
         location = request.form['location']
         reason = request.form['reason']
 
         cursor.execute("""
-            INSERT INTO requests (name, blood_group, phone, email, location, reason)
+            INSERT INTO requests (name, blood_group, contact, email, location, reason)
             VALUES (%s, %s, %s, %s, %s, %s)
-        """, (name, blood_group, phone, email, location, reason))
+        """, (name, blood_group, contact, email, location, reason))
         db.commit()
         return redirect('/view_requests')
     return render_template('request_blood.html')
@@ -66,11 +66,17 @@ def view_donors():
     return render_template('view_donors.html', donors=donors)
 
 # View Requests
+# View Requests
 @app.route('/view_requests')
 def view_requests():
     cursor.execute("SELECT * FROM requests")
     requests_data = cursor.fetchall()
     return render_template('view_requests.html', requests=requests_data)
+
+@app.route('/google16368af67d90c335.html')
+def google_verification():
+    return app.send_static_file('verify/google16368af67d90c335.html')
+
 
 # Run the app
 if __name__ == '__main__':
