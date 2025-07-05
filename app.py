@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, send_from_directory
 import mysql.connector
 
 app = Flask(__name__)
@@ -87,13 +87,20 @@ def view_requests():
     conn.close()
     return render_template('view_requests.html', requests=requests_data)
 
+# Serve sitemap
 @app.route('/sitemap.xml')
 def sitemap():
     return app.send_static_file('sitemap.xml')
 
+# Google verification (old key)
 @app.route('/google16368af67d90c335.html')
-def google_verify():
+def google_verify_old():
     return app.send_static_file('google16368af67d90c335.html')
+
+# ✅ Google verification (new key)
+@app.route('/google73e460509bc43d92.html')
+def google_verify_new():
+    return send_from_directory('.', 'google73e460509bc43d92.html')
 
 # Run the app
 if __name__ == '__main__':
