@@ -87,6 +87,14 @@ def view_requests():
     conn.close()
     return render_template('view_requests.html', requests=requests_data)
 
+@app.route('/sitemap.xml')
+def sitemap():
+    return app.send_static_file('sitemap.xml')
+
+@app.route('/google16368af67d90c335.html')
+def google_verify():
+    return app.send_static_file('google16368af67d90c335.html')
+
 # Run the app
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)

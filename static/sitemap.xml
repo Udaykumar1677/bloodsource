@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   <url>
+      <loc>https://bloodsource-3mh9.onrender.com/</loc>
+      <priority>1.00</priority>
+   </url>
+   <url>
+      <loc>https://bloodsource-3mh9.onrender.com/register_donor</loc>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>https://bloodsource-3mh9.onrender.com/request_blood</loc>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>https://bloodsource-3mh9.onrender.com/view_donors</loc>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>https://bloodsource-3mh9.onrender.com/view_requests</loc>
+      <priority>0.80</priority>
+   </url>
+</urlset>
