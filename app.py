@@ -3,18 +3,15 @@ import mysql.connector
 
 app = Flask(__name__)
 
-# MySQL configuration
-import mysql.connector
-
-db = mysql.connector.connect(
-    host="sql12.freesqldatabase.com",
-    user="sql12787899",
-    password="cMJDREvHib",
-    database="sql12787899",
-    port=3306
-)
-
-cursor = db.cursor()
+# ✅ Reusable function to get a fresh database connection
+def get_db_connection():
+    return mysql.connector.connect(
+        host="sql12.freesqldatabase.com",
+        user="sql12787899",
+        password="cMJDREvHib",
+        database="sql12787899",
+        port=3306
+    )
 
 # Home Page
 @app.route('/')
@@ -31,11 +28,16 @@ def register_donor():
         email = request.form['email']
         location = request.form['location']
 
+        conn = get_db_connection()
+        cursor = conn.cursor()
         cursor.execute("""
             INSERT INTO donors (name, blood_group, phone, email, location)
             VALUES (%s, %s, %s, %s, %s)
         """, (name, blood_group, phone, email, location))
-        db.commit()
+        conn.commit()
+        cursor.close()
+        conn.close()
+
         return redirect('/view_donors')
     return render_template('register_donor.html')
 
@@ -50,33 +52,40 @@ def request_blood():
         location = request.form['location']
         reason = request.form['reason']
 
+        conn = get_db_connection()
+        cursor = conn.cursor()
         cursor.execute("""
             INSERT INTO requests (name, blood_group, contact, email, location, reason)
             VALUES (%s, %s, %s, %s, %s, %s)
         """, (name, blood_group, contact, email, location, reason))
-        db.commit()
+        conn.commit()
+        cursor.close()
+        conn.close()
+
         return redirect('/view_requests')
     return render_template('request_blood.html')
 
 # View Donors
 @app.route('/view_donors')
 def view_donors():
+    conn = get_db_connection()
+    cursor = conn.cursor()
     cursor.execute("SELECT name, blood_group, phone, email, location FROM donors")
     donors = cursor.fetchall()
+    cursor.close()
+    conn.close()
     return render_template('view_donors.html', donors=donors)
 
 # View Requests
-# View Requests
 @app.route('/view_requests')
 def view_requests():
+    conn = get_db_connection()
+    cursor = conn.cursor()
     cursor.execute("SELECT * FROM requests")
     requests_data = cursor.fetchall()
+    cursor.close()
+    conn.close()
     return render_template('view_requests.html', requests=requests_data)
-
-@app.route('/google16368af67d90c335.html')
-def google_verification():
-    return app.send_static_file('verify/google16368af67d90c335.html')
-
 
 # Run the app
 if __name__ == '__main__':
