@@ -1,10 +1,9 @@
 from flask import Flask, render_template, request, redirect, send_from_directory
 import mysql.connector
-import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='static')
 
-# ✅ Reusable function to get a fresh database connection
+# ✅ Reusable DB connection
 def get_db_connection():
     return mysql.connector.connect(
         host="sql12.freesqldatabase.com",
@@ -13,10 +12,6 @@ def get_db_connection():
         database="sql12787899",
         port=3306
     )
-
-# -----------------------
-# ROUTES
-# -----------------------
 
 # Home Page
 @app.route('/')
@@ -42,7 +37,6 @@ def register_donor():
         conn.commit()
         cursor.close()
         conn.close()
-
         return redirect('/view_donors')
     return render_template('register_donor.html')
 
@@ -66,7 +60,6 @@ def request_blood():
         conn.commit()
         cursor.close()
         conn.close()
-
         return redirect('/view_requests')
     return render_template('request_blood.html')
 
@@ -92,32 +85,21 @@ def view_requests():
     conn.close()
     return render_template('view_requests.html', requests=requests_data)
 
-# -----------------------
-# STATIC FILES FOR GOOGLE
-# -----------------------
-
-# Serve robots.txt from root
-@app.route('/robots.txt')
-def robots():
-    return send_from_directory(os.path.join(app.root_path), 'robots.txt')
-
-# Serve sitemap.xml from static folder
+# ✅ Serve sitemap
 @app.route('/sitemap.xml')
 def sitemap():
     return app.send_static_file('sitemap.xml')
 
-# Google verification (old key)
-@app.route('/google16368af67d90c335.html')
-def google_verify_old():
-    return app.send_static_file('google16368af67d90c335.html')
+# ✅ Serve robots.txt
+@app.route('/robots.txt')
+def robots():
+    return app.send_static_file('robots.txt')
 
-# Google verification (new key)
+# ✅ Google Site Verification File
 @app.route('/google73e460509bc43d92.html')
-def google_verify_new():
+def google_verify():
     return send_from_directory('.', 'google73e460509bc43d92.html')
 
-# -----------------------
-# RUN APP
-# -----------------------
+# ✅ Run App
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
