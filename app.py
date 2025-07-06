@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, send_from_directory
 import mysql.connector
+import os
 
 app = Flask(__name__)
 
@@ -12,6 +13,10 @@ def get_db_connection():
         database="sql12787899",
         port=3306
     )
+
+# -----------------------
+# ROUTES
+# -----------------------
 
 # Home Page
 @app.route('/')
@@ -87,7 +92,16 @@ def view_requests():
     conn.close()
     return render_template('view_requests.html', requests=requests_data)
 
-# Serve sitemap
+# -----------------------
+# STATIC FILES FOR GOOGLE
+# -----------------------
+
+# Serve robots.txt from root
+@app.route('/robots.txt')
+def robots():
+    return send_from_directory(os.path.join(app.root_path), 'robots.txt')
+
+# Serve sitemap.xml from static folder
 @app.route('/sitemap.xml')
 def sitemap():
     return app.send_static_file('sitemap.xml')
@@ -97,11 +111,13 @@ def sitemap():
 def google_verify_old():
     return app.send_static_file('google16368af67d90c335.html')
 
-# ✅ Google verification (new key)
+# Google verification (new key)
 @app.route('/google73e460509bc43d92.html')
 def google_verify_new():
     return send_from_directory('.', 'google73e460509bc43d92.html')
 
-# Run the app
+# -----------------------
+# RUN APP
+# -----------------------
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
