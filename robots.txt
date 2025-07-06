@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bloodsource-3mh9.onrender.com/sitemap.xml
