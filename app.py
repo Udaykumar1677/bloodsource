@@ -4,17 +4,17 @@ import os
 
 app = Flask(__name__)
 
-# ✅ Reusable DB connection
+# ✅ Correct permanent DB path
 def get_db_connection():
-    conn = sqlite3.connect('bloodsource.db')
+    db_path = os.path.join(os.path.dirname(__file__), 'bloodsource.db')
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
 
-# ✅ Create Tables if Not Exists
+# ✅ Create tables if not exists
 def create_tables():
     conn = get_db_connection()
     cursor = conn.cursor()
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS donors (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,7 +25,6 @@ def create_tables():
             location TEXT NOT NULL
         )
     ''')
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS requests (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,13 +36,12 @@ def create_tables():
             reason TEXT NOT NULL
         )
     ''')
-
     conn.commit()
     conn.close()
 
 create_tables()
 
-# Home Page
+# Home
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -111,6 +109,6 @@ def view_requests():
     conn.close()
     return render_template('view_requests.html', requests=requests_data)
 
-# Run App
+# Run
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
