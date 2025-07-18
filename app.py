@@ -4,19 +4,17 @@ import os
 
 app = Flask(__name__)
 
-# ✅ Permanent DB connection
+# ✅ Correct permanent DB path with check_same_thread=False for persistent access
 def get_db_connection():
     db_path = os.path.join(os.path.dirname(__file__), 'bloodsource.db')
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = sqlite3.Row  # ✅ Ensures dict-style rows
+    conn = sqlite3.connect(db_path, check_same_thread=False)
+    conn.row_factory = sqlite3.Row
     return conn
 
-# ✅ Create tables only once
+# ✅ Create tables if not exists
 def create_tables():
     conn = get_db_connection()
     cursor = conn.cursor()
-
-    # Create donors table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS donors (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,8 +25,6 @@ def create_tables():
             location TEXT NOT NULL
         )
     ''')
-
-    # Create requests table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS requests (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,19 +36,17 @@ def create_tables():
             reason TEXT NOT NULL
         )
     ''')
-
     conn.commit()
     conn.close()
 
-# ✅ Initialize tables
 create_tables()
 
-# ✅ Home Page
+# Home
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# ✅ Register Donor
+# Register Donor
 @app.route('/register_donor', methods=['GET', 'POST'])
 def register_donor():
     if request.method == 'POST':
@@ -70,22 +64,10 @@ def register_donor():
         """, (name, blood_group, phone, email, location))
         conn.commit()
         conn.close()
-
         return redirect('/view_donors')
-
     return render_template('register_donor.html')
 
-# ✅ View Donors
-@app.route('/view_donors')
-def view_donors():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM donors")
-    donors = cursor.fetchall()
-    conn.close()
-    return render_template('view_donors.html', donors=donors)
-
-# ✅ Request Blood
+# Request Blood
 @app.route('/request_blood', methods=['GET', 'POST'])
 def request_blood():
     if request.method == 'POST':
@@ -104,12 +86,20 @@ def request_blood():
         """, (name, blood_group, contact, email, location, reason))
         conn.commit()
         conn.close()
-
         return redirect('/view_requests')
-
     return render_template('request_blood.html')
 
-# ✅ View Blood Requests
+# View Donors
+@app.route('/view_donors')
+def view_donors():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT name, blood_group, phone, email, location FROM donors")
+    donors = cursor.fetchall()
+    conn.close()
+    return render_template('view_donors.html', donors=donors)
+
+# View Requests
 @app.route('/view_requests')
 def view_requests():
     conn = get_db_connection()
@@ -119,6 +109,6 @@ def view_requests():
     conn.close()
     return render_template('view_requests.html', requests=requests_data)
 
-# ✅ Run the Flask App
+# Run
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000, debug=True)
+    app.run(host='0.0.0.0', port=10000)
