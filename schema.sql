@@ -17,3 +17,13 @@ CREATE TABLE IF NOT EXISTS requests (
     city VARCHAR(50),
     reason TEXT
 );
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS blood_banks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            available_groups TEXT NOT NULL,
+            units TEXT NOT NULL,
+            location TEXT NOT NULL
+        )
+    ''')
