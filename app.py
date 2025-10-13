@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 import sqlite3
 import os
 
@@ -85,7 +85,7 @@ def register_donor():
         return redirect('/view_donors')
     return render_template('register_donor.html')
 
-# View Donors
+# ✅ View Donors
 @app.route('/view_donors')
 def view_donors():
     conn = get_db_connection()
@@ -94,7 +94,6 @@ def view_donors():
     donors = cursor.fetchall()
     conn.close()
     return render_template('view_donors.html', donors=donors)
-
 
 # ✅ Request Blood
 @app.route('/request_blood', methods=['GET', 'POST'])
@@ -152,6 +151,31 @@ def blood_banks():
     conn.close()
 
     return render_template('blood_banks.html', banks=banks)
+
+# ✅ Update Blood Bank (for inline editing)
+@app.route('/update_bank/<int:id>', methods=['POST'])
+def update_bank(id):
+    data = request.get_json()
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+        UPDATE blood_banks 
+        SET name = ?, available_groups = ?, units = ?, location = ?
+        WHERE id = ?
+    ''', (data['name'], data['available_groups'], data['units'], data['location'], id))
+    conn.commit()
+    conn.close()
+    return ('', 204)
+
+# ✅ Delete Blood Bank
+@app.route('/delete_bank/<int:id>')
+def delete_bank(id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM blood_banks WHERE id = ?", (id,))
+    conn.commit()
+    conn.close()
+    return redirect('/blood_banks')
 
 # ✅ Run app
 if __name__ == '__main__':

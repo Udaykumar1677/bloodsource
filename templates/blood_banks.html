@@ -1,122 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Blood Banks</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(to bottom right, #e0f7fa, #fce4ec);
-        }
-        header {
-            background: linear-gradient(to right, #d500f9, #7c4dff);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-        h1 {
-            margin: 0;
-            font-size: 2rem;
-        }
-        .container {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-        }
-        .submit-btn {
-            background-color: #7c4dff;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-        .submit-btn:hover {
-            background-color: #651fff;
-        }
-        .bank-list {
-            margin-top: 2rem;
-        }
-        .bank-card {
-            background: #f3f4f6;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 1rem 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .bank-card h3 {
-            margin-top: 0;
-            color: #1f2937;
-        }
-        .bank-card p {
-            margin: 4px 0;
-            color: #374151;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Blood Banks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right, #e0f7fa, #fce4ec);
+    }
+    header {
+      background: linear-gradient(to right, #d500f9, #7c4dff);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      border-bottom-left-radius: 25px;
+      border-bottom-right-radius: 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    h1 { margin: 0; font-size: 2rem; }
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .form-group { margin-bottom: 1rem; }
+    label { font-weight: bold; display: block; margin-bottom: 0.5rem; }
+    input[type="text"] {
+      width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 10px;
+    }
+    .submit-btn {
+      background-color: #7c4dff; color: white; border: none; padding: 12px 20px;
+      border-radius: 10px; font-size: 1rem; cursor: pointer;
+    }
+    .submit-btn:hover { background-color: #651fff; }
+
+    .bank-list { margin-top: 2rem; }
+    .bank-card {
+      background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 12px;
+      padding: 1rem 1.5rem; margin-bottom: 1rem;
+    }
+    .bank-card input[type="text"] {
+      width: calc(100% - 1rem); margin: 0.2rem 0;
+    }
+    .actions { margin-top: 10px; }
+    .edit-btn, .delete-btn, .save-btn, .cancel-btn {
+      display: inline-block; padding: 8px 14px; border-radius: 8px;
+      color: white; text-decoration: none; margin-right: 10px;
+      font-size: 0.9rem; cursor: pointer;
+    }
+    .edit-btn { background-color: #2196f3; }
+    .edit-btn:hover { background-color: #1976d2; }
+    .delete-btn { background-color: #f44336; }
+    .delete-btn:hover { background-color: #d32f2f; }
+    .save-btn { background-color: #4caf50; }
+    .cancel-btn { background-color: #9e9e9e; }
+  </style>
 </head>
 <body>
 
 <header>
-    <h1>Blood Banks Available</h1>
+  <h1>Blood Banks Available</h1>
 </header>
 
 <div class="container">
-    <form method="POST">
-        <div class="form-group">
-            <label for="name">Blood Bank Name</label>
-            <input type="text" id="name" name="name" required>
-        </div>
-        <div class="form-group">
-            <label for="available_groups">Available Blood Groups</label>
-            <input type="text" id="available_groups" name="available_groups" placeholder="e.g., A+, B-, O+" required>
-        </div>
-        <div class="form-group">
-            <label for="units">Units Available</label>
-            <input type="text" id="units" name="units" required>
-        </div>
-        <div class="form-group">
-            <label for="location">Location</label>
-            <input type="text" id="location" name="location" required>
-        </div>
-        <button type="submit" class="submit-btn">Add Blood Bank</button>
-    </form>
-
-    <div class="bank-list">
-        <h2>Available Blood Banks</h2>
-        {% for bank in banks %}
-            <div class="bank-card">
-                <h3>{{ bank['name'] }}</h3>
-                <p><strong>Available Groups:</strong> {{ bank['available_groups'] }}</p>
-                <p><strong>Units:</strong> {{ bank['units'] }}</p>
-                <p><strong>Location:</strong> {{ bank['location'] }}</p>
-            </div>
-        {% endfor %}
+  <form method="POST">
+    <div class="form-group">
+      <label for="name">Blood Bank Name</label>
+      <input type="text" id="name" name="name" required>
     </div>
+    <div class="form-group">
+      <label for="available_groups">Available Blood Groups</label>
+      <input type="text" id="available_groups" name="available_groups" placeholder="e.g., A+, B-, O+" required>
+    </div>
+    <div class="form-group">
+      <label for="units">Units Available</label>
+      <input type="text" id="units" name="units" required>
+    </div>
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input type="text" id="location" name="location" required>
+    </div>
+    <button type="submit" class="submit-btn">Add Blood Bank</button>
+  </form>
+
+  <div class="bank-list">
+    <h2>Available Blood Banks</h2>
+    {% for bank in banks %}
+    <div class="bank-card" id="bank-{{ bank['id'] }}">
+      <div class="view-mode">
+        <h3>{{ bank['name'] }}</h3>
+        <p><strong>Available Groups:</strong> {{ bank['available_groups'] }}</p>
+        <p><strong>Units:</strong> {{ bank['units'] }}</p>
+        <p><strong>Location:</strong> {{ bank['location'] }}</p>
+      </div>
+
+      <div class="edit-mode" style="display:none;">
+        <input type="text" name="name" value="{{ bank['name'] }}">
+        <input type="text" name="available_groups" value="{{ bank['available_groups'] }}">
+        <input type="text" name="units" value="{{ bank['units'] }}">
+        <input type="text" name="location" value="{{ bank['location'] }}">
+      </div>
+
+      <div class="actions">
+        <button class="edit-btn" onclick="toggleEdit({{ bank['id'] }})">Edit</button>
+        <button class="save-btn" style="display:none;" onclick="saveEdit({{ bank['id'] }})">Save</button>
+        <button class="cancel-btn" style="display:none;" onclick="cancelEdit({{ bank['id'] }})">Cancel</button>
+        <a href="/delete_bank/{{ bank['id'] }}" class="delete-btn" onclick="return confirm('Are you sure you want to delete this bank?');">Delete</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
 </div>
+
+<script>
+function toggleEdit(id) {
+  const card = document.getElementById(`bank-${id}`);
+  card.querySelector('.view-mode').style.display = 'none';
+  card.querySelector('.edit-mode').style.display = 'block';
+  card.querySelector('.edit-btn').style.display = 'none';
+  card.querySelector('.save-btn').style.display = 'inline-block';
+  card.querySelector('.cancel-btn').style.display = 'inline-block';
+}
+
+function cancelEdit(id) {
+  const card = document.getElementById(`bank-${id}`);
+  card.querySelector('.view-mode').style.display = 'block';
+  card.querySelector('.edit-mode').style.display = 'none';
+  card.querySelector('.edit-btn').style.display = 'inline-block';
+  card.querySelector('.save-btn').style.display = 'none';
+  card.querySelector('.cancel-btn').style.display = 'none';
+}
+
+function saveEdit(id) {
+  const card = document.getElementById(`bank-${id}`);
+  const name = card.querySelector('input[name="name"]').value;
+  const available_groups = card.querySelector('input[name="available_groups"]').value;
+  const units = card.querySelector('input[name="units"]').value;
+  const location = card.querySelector('input[name="location"]').value;
+
+  fetch(`/update_bank/${id}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, available_groups, units, location })
+  })
+  .then(response => {
+    if (response.ok) location.reload();
+    else alert('Error updating bank');
+  });
+}
+</script>
 
 </body>
 </html>
