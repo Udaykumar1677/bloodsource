@@ -1,4 +1,3 @@
 Flask
 google-generativeai
-sqlite3-binary
 gunicorn
